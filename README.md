@@ -33,6 +33,6 @@ Esta base ainda não contém testes. BUILD SUCCESS nesta etapa confirma a compil
 | Vini | `pratica/backend` | Modelos, schema/configuração, usuários, segurança, agenda e API |
 | Ryan | `pratica/interface-qualidade` | Interface, testes, scripts, CI, contêiner e documentação atualizada |
 
-A parte do Ryan começa a partir do backend publicado e conferido. Cada integrante deve revisar sua parte, executar as verificações e fazer os commits com sua própria conta. A migração reaproveita código existente assistido pelo agente; as contribuições novas e revisões devem ser descritas como realmente ocorreram.
+Vini continua a partir da base publicada em `pratica/base-java`. A parte do Ryan, de interface e qualidade, começa depois do backend publicado e conferido. Cada integrante deve revisar sua parte, executar as verificações e fazer os commits com sua própria conta. A migração reaproveita código existente assistido pelo agente; as contribuições novas e revisões devem ser descritas como realmente ocorreram.
 
 O PR do repositório anterior permanece fechado. Nenhum PR novo, merge na main ou tag de release faz parte desta etapa. A main mantém apenas uma base de inicialização; o código inicial está na branch `pratica/base-java`.
