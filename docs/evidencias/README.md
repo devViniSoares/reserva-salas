@@ -11,10 +11,10 @@ Este índice contém resultados gerados neste repositório. Nenhum resultado de 
 | Carga | [Relatório](../performance/resultado-01.md) e [JSON](../performance/resultado-01.json) | 200 respostas 200, p95 73,47 ms, 0 erros, 1 criação e 9 conflitos |
 | Planos | [Testes](../testes/plano.md), [carga](../performance/plano.md) | Critérios e limitações declarados |
 | Clone novo | [Estado](../entrega/validacao-clone.md) | Não executado |
-| CI | A verificar na branch publicada | Nenhuma execução de CI é afirmada neste índice |
+| CI | [Execução de push aprovada](https://github.com/devViniSoares/reserva-salas/actions/runs/42877720769) no SHA `44060b8a01c802ae248c8d0d4f49bb595b341a4d` | Testes, JaCoCo, documentação, persistência, carga e artifact aprovados; Sonar ignorado |
 | Inspeção visual | Não executada | Ver [plano manual](../testes/plano.md) |
 
-As medições locais identificam no JSON o SHA do código que foi testado (`46cc95df717dd7a5c276150316edeca70e6b7430`). Os commits posteriores até a preparação deste índice alteram documentação, não o backend ou os scripts medidos. Os resultados são restritos ao ambiente local e não comprovam qualidade de produção.
+As medições locais identificam no JSON o SHA do código testado (`46cc95df717dd7a5c276150316edeca70e6b7430`). O CI do SHA `44060b8a01c802ae248c8d0d4f49bb595b341a4d` também passou, incluindo o validador documental. O artifact `evidencias-44060b8a01c802ae248c8d0d4f49bb595b341a4d` foi publicado pelo [workflow](https://github.com/devViniSoares/reserva-salas/actions/runs/42877720769) e expira em 08/02/2027. O job Sonar foi ignorado; não há Quality Gate externo aprovado. Esses resultados não são CI da `main` e não comprovam qualidade de produção.
 
 ## Revisão e decisão
 

@@ -14,10 +14,10 @@ Este relatório resume as verificações feitas no checkout do repositório [res
 | Desempenho | [Ensaio de carga](performance/resultado-01.md): 200 respostas HTTP 200, p95 73,47 ms, zero erros | Amostra curta; não extrapolar para produção |
 | Interface | Página e JavaScript importados e revisados | Inspeção visual/accessibilidade manual pendente |
 | Reprodutibilidade | `.\mvnw.cmd -B verify` aprovado neste checkout | Clone novo ainda não validado |
-| CI | Workflow ainda será verificado após a publicação do lote de CI | Não há resultado remoto declarado aqui |
+| CI | [Workflow de push aprovado](https://github.com/devViniSoares/reserva-salas/actions/runs/42877720769), SHA `44060b8a01c802ae248c8d0d4f49bb595b341a4d` | Execução não é da `main`; Sonar foi ignorado |
 | Manutenibilidade | Componentes e testes Java presentes | SonarCloud não configurado/verificado |
 
-Os resultados locais citados identificam o SHA efetivamente medido nos JSONs. O sucesso do build não foi interpretado como prova de CI ou de qualidade de produção.
+Os resultados locais citados identificam o SHA efetivamente medido nos JSONs. O CI citado avalia o SHA indicado; a aprovação não foi interpretada como prova de execução na `main`, de Quality Gate SonarCloud ou de qualidade para produção.
 
 ## Parecer
 

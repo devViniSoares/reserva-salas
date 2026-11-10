@@ -12,7 +12,7 @@ Data: 10/11/2026. Branch analisada: `feat/interface-qualidade`, baseada em `feat
 | Persistência após reinício | [JSON local](testes/persistencia-local.json) | Aprovado no ambiente medido |
 | Carga local | [Resultado](performance/resultado-01.md), 200 respostas válidas e disputa 1/9 | Aprovado nos critérios locais |
 | Documentação | Planos e documentos revisados; verificação automática deve ser executada com o conjunto completo | Pendente de execução final |
-| CI do SHA final | Ainda não avaliada neste documento | Pendente |
+| CI do commit `44060b8a01c802ae248c8d0d4f49bb595b341a4d` | [Workflow de push](https://github.com/devViniSoares/reserva-salas/actions/runs/42877720769) | Aprovado nesse SHA; não é CI da `main`; Sonar ignorado |
 | Clone limpo | [Procedimento e estado](entrega/validacao-clone.md) | Não executado |
 | Revisão por pares/aceite de requisitos | Sem registro | Pendente |
 | Inspeção visual e acessibilidade | [Roteiro](testes/plano.md) | Pendente |

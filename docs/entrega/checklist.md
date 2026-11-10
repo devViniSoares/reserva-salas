@@ -11,7 +11,7 @@ Data da revisão: 10/11/2026. Branch de integração: `feat/interface-qualidade`
 | Carga | 200 consultas locais, p95 73,47 ms, 0 erros, disputa 1 criação/9 conflitos | Interpretar somente como ensaio local |
 | Especificação | [Requisitos](../requisitos.md), [API](../api.md), [arquitetura](../arquitetura.md), [RTM](../rtm.md) | Confirmar premissas com o grupo |
 | Documentação | Planos e resultados deste checkout | Executar `node scripts/verify-docs.mjs` com todos os arquivos presentes |
-| CI | Workflow ainda a verificar no SHA final | Conferir execução e artifacts após publicação |
+| CI | [Workflow aprovado](https://github.com/devViniSoares/reserva-salas/actions/runs/42877720769) no SHA `44060b8a01c802ae248c8d0d4f49bb595b341a4d`; Sonar ignorado | Resultado vale para esse SHA, não para CI da `main` |
 | Revisão por pares | Não registrada | Revisar diff e registrar observações |
 | SonarCloud | Não configurado/verificado | Não declarar Quality Gate |
 | Release/tag | Nenhuma criada | Não criar tag nem fazer merge sem autorização |
