@@ -90,7 +90,7 @@ function bookingData() {
   if(!d.inicio || !d.fim)throw new Error('Informe o início e o fim da reserva.');
   return {...d,recursoId:Number(d.recursoId),inicio:new Date(d.inicio).toISOString(),fim:new Date(d.fim).toISOString()};
 }
-function submit(id, fn) { $(id).addEventListener('submit',e=>{ e.preventDefault(); run(()=>fn(e.target),e.submitter); }); }
+function submit(id, fn) { $(id).addEventListener('submit',e=>{ e.preventDefault(); void run(()=>fn(e.target),e.submitter); }); }
 submit('login-form',async form=>{const d=fields(form);await enter(d.email,d.senha);form.reset();message('Bem-vindo. Encontre o recurso para sua próxima atividade.');});
 submit('signup-form',async form=>{const d=fields(form);await api('/cadastro','POST',d);await enter(d.email,d.senha);form.reset();message('Conta criada. Você já pode reservar.');});
 submit('resource-form',async form=>{const d=fields(form),id=d.id;delete d.id;d.capacidade=Number(d.capacidade);d.ativo=form.elements.ativo.checked;await api('/recursos'+(id?'/'+id:''),id?'PUT':'POST',d);$('resource-dialog').close();message('Recurso salvo.');await refresh();});
@@ -104,4 +104,4 @@ $('search').addEventListener('change',()=>run(renderResources));
 $('all-bookings').addEventListener('change',()=>run(renderBookings));
 $('logout').addEventListener('click',()=>run(async()=>{const response=await fetch('/logout',{method:'POST',headers:{[csrf.headerName]:csrf.token}});if(!response.ok)throw new Error('Não foi possível encerrar a sessão.');authorization='';me=null;csrf=null;location.reload();}));
 document.querySelectorAll('.close-dialog').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
-run(token);
+void run(token);
