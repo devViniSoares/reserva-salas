@@ -1,38 +1,133 @@
 # Reserva de Salas
 
-Migração incremental do projeto Java de Organização de Recursos para o repositório [reserva-salas](https://github.com/devViniSoares/reserva-salas).
+Aplicação Java para reservar salas e equipamentos, com API REST e interface em português. Repositório: [devViniSoares/reserva-salas](https://github.com/devViniSoares/reserva-salas).
 
-Nesta etapa há somente a base Java/Maven. **Interface, regras de reservas, segurança e testes ainda serão importados e revisados pelo grupo.** O projeto completo de referência está em [project_qualidade, branch pratica/entrega-final](https://github.com/devViniSoares/project_qualidade/tree/pratica/entrega-final), commit `f657387639c42635eb569dcf0ec5c0fc460f0e86`.
+## Funcionalidades
 
-## Base publicada
+- Cadastro e login com perfis Usuário, Gestor e Administrador.
+- Catálogo de recursos com busca, filtro e administração.
+- Disponibilidade, reservas futuras de até 12 horas e cancelamento com histórico.
+- Proteção contra conflitos de recurso e sobreposição das reservas do usuário.
+- Interface web, autenticação HTTP Basic e proteção CSRF.
 
-- Java 21, Spring Boot e Maven Wrapper 3.9.11.
-- Configuração inicial de dependências e JaCoCo.
-- Classe de entrada `br.edu.senac.recursos.RecursosApplication`.
-- Arquivos de Git para excluir bancos locais, senhas, dependências baixadas e builds.
+## Branches
 
-Não foram copiados bancos, senhas, `target/`, `.tools/`, clones auxiliares ou histórico Git do repositório anterior.
+- `feat/backend`: backend publicado pelo Vini.
+- `feat/interface-qualidade`: interface, testes, documentação, scripts, contêiner e CI, baseada em `feat/backend`.
 
-## Conferir a compilação
+Os commits desta entrega estão separados por lote. A branch é destinada à revisão; não houve merge na `main`, tag ou PR automático.
 
-Instale JDK 21 ou 23 e configure JAVA_HOME. No PowerShell, ajustando o caminho do JDK se necessário:
+## Pré-requisitos
 
-```powershell
-git clone --branch pratica/base-java https://github.com/devViniSoares/reserva-salas.git
-Set-Location reserva-salas
-$env:JAVA_HOME = 'C:\Program Files\Java\jdk-23'
-.\mvnw.cmd -B verify
+- JDK 21 ou superior, com `JAVA_HOME` apontando para o JDK.
+- Internet no primeiro build para obter Maven Wrapper e dependências.
+- Node.js 22 ou superior para scripts de documentação e carga.
+- Porta 8080 livre para execução local.
+
+## Clonar, testar e validar documentos
+
+Linux/macOS/Git Bash:
+
+```bash
+git clone --branch feat/interface-qualidade https://github.com/devViniSoares/reserva-salas.git
+cd reserva-salas
+./mvnw -B verify
+node scripts/verify-docs.mjs
 ```
 
-Esta base ainda não contém testes. BUILD SUCCESS nesta etapa confirma a compilação e o empacotamento, não a validação funcional nem a cobertura da aplicação completa. O Maven pode ignorar o JaCoCo por ausência de dados de execução.
+Windows PowerShell:
 
-## Divisão planejada
+```powershell
+git clone --branch feat/interface-qualidade https://github.com/devViniSoares/reserva-salas.git
+Set-Location reserva-salas
+.\mvnw.cmd -B verify
+node scripts/verify-docs.mjs
+```
 
-| Responsável | Branch prevista | Escopo |
+O `verify` compila, executa os testes e empacota o JAR em `target/`. O gate JaCoCo exige pelo menos 80% de linhas cobertas. Os testes usam H2 em memória e dados sintéticos. Não é necessário instalar Maven, Docker nem banco externo.
+
+## Executar
+
+O primeiro início requer uma senha inicial de administrador entre 12 e 72 caracteres, limitada também a 72 bytes UTF-8. Defina uma senha própria no ambiente; não a grave em arquivos versionados. O e-mail padrão é `admin@exemplo.test`.
+
+PowerShell:
+
+```powershell
+$credencialLocal = Get-Credential -UserName 'admin@exemplo.test'
+$env:ADMIN_PASSWORD = $credencialLocal.GetNetworkCredential().Password
+java -jar target/organizacao-recursos-1.0.0-SNAPSHOT.jar
+```
+
+Abra `http://127.0.0.1:8080`. O primeiro acesso cria o administrador; usuários podem cadastrar-se pela interface. Os dados são armazenados em `data/recursos.mv.db`. Se já houver administrador, a senha de bootstrap não altera sua conta. Faça backup com a aplicação parada e não abra o mesmo banco em várias instâncias.
+
+| Variável | Padrão | Uso |
 |---|---|---|
-| Vini | `pratica/backend` | Modelos, schema/configuração, usuários, segurança, agenda e API |
-| Ryan | `pratica/interface-qualidade` | Interface, testes, scripts, CI, contêiner e documentação atualizada |
+| `ADMIN_EMAIL` | `admin@exemplo.test` | E-mail do administrador inicial |
+| `ADMIN_PASSWORD` | vazio | Obrigatória somente ao criar o primeiro administrador |
+| `DB_URL` | `jdbc:h2:file:./data/recursos;DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0` | URL do H2 |
+| `DB_PASSWORD` | vazio | Senha opcional do banco |
+| `PORT` | `8080` | Porta HTTP |
+| `BIND_ADDRESS` | `127.0.0.1` | Endereço de escuta |
 
-Vini continua a partir da base publicada em `pratica/base-java`. A parte do Ryan, de interface e qualidade, começa depois do backend publicado e conferido. Cada integrante deve revisar sua parte, executar as verificações e fazer os commits com sua própria conta. A migração reaproveita código existente assistido pelo agente; as contribuições novas e revisões devem ser descritas como realmente ocorreram.
+O padrão local limita a escuta a localhost. HTTP Basic, falta de rate limiting e sincronização limitada a uma instância impedem tratar este protótipo como pronto para exposição pública ou produção.
 
-O PR do repositório anterior permanece fechado. Nenhum PR novo, merge na main ou tag de release faz parte desta etapa. A main mantém apenas uma base de inicialização; o código inicial está na branch `pratica/base-java`.
+## Contêiner
+
+Com Docker instalado, a imagem compila e executa o JAR como usuário não root. Use volume nomeado para preservar o H2 e mantenha a porta publicada somente em localhost para a demonstração:
+
+```powershell
+docker build -t reserva-salas .
+$env:ADMIN_PASSWORD = Read-Host 'Senha inicial do administrador'
+docker run --rm -p 127.0.0.1:8080:8080 --mount source=reserva-salas-data,target=/app/data --env ADMIN_PASSWORD reserva-salas
+```
+
+O contêiner escuta internamente em `0.0.0.0` para permitir o encaminhamento de porta do Docker; não publique o serviço na rede sem configurar os controles de segurança e operação necessários.
+
+## Scripts de validação
+
+Execute os ensaios somente contra instância e banco descartáveis. O script de carga cria dados sintéticos; defina `ADMIN_PASSWORD` e `BASE_URL` para o servidor de teste:
+
+```powershell
+$env:ADMIN_PASSWORD = [guid]::NewGuid().ToString('N')
+$env:DB_URL = 'jdbc:h2:mem:carga;DB_CLOSE_DELAY=-1'
+$env:PORT = '8081'
+$processoCarga = $null
+try {
+    $processoCarga = Start-Process -FilePath "$env:JAVA_HOME\bin\java.exe" -ArgumentList '-jar','target/organizacao-recursos-1.0.0-SNAPSHOT.jar' -PassThru
+    $env:BASE_URL = 'http://127.0.0.1:8081'
+    # Aguarde /api/saude responder antes de iniciar a carga.
+    node scripts/carga.mjs
+} finally {
+    if ($null -ne $processoCarga) { Stop-Process -Id $processoCarga.Id -ErrorAction SilentlyContinue }
+    Remove-Item Env:ADMIN_PASSWORD,Env:DB_URL,Env:PORT,Env:BASE_URL -ErrorAction SilentlyContinue
+}
+```
+
+Por padrão, a carga grava em `performance-local/resultado.json`, diretório ignorado pelo Git. O workflow publica resultados com o SHA avaliado. A execução de persistência (`node scripts/persistencia.mjs`) cria banco e logs temporários em `.tools/`; use porta 8082 livre ou configure `TEST_PORT`.
+
+## Documentação
+
+- [API](docs/api.md) · [Requisitos](docs/requisitos.md) · [RTM](docs/rtm.md)
+- [Arquitetura](docs/arquitetura.md)
+- [Plano e relatório de testes](docs/testes/plano.md) · [persistência](docs/testes/persistencia-local.json)
+- [Plano e resultado de carga](docs/performance/plano.md) · [resultado](docs/performance/resultado-01.md)
+- [Defeitos e pendências](docs/defeitos/README.md) · [relatório de qualidade](docs/relatorio-qualidade.md)
+- [Checklist](docs/entrega/checklist.md) · [validação de clone](docs/entrega/validacao-clone.md) · [evidências](docs/evidencias/README.md)
+- [Decisão de qualidade](docs/decisao-qualidade.md) · [procedimento de release](docs/entrega/release.md) · [changelog](CHANGELOG.md)
+
+## CI
+
+O [workflow](.github/workflows/ci.yml) roda Maven verify, valida documentação, testa persistência e executa carga em push para `main` e branches `feat/**`. Os artifacts são nomeados com o SHA avaliado. Verifique a execução na branch; resultados locais não substituem CI.
+
+O job SonarCloud depende das variables `SONAR_PROJECT_KEY` e `SONAR_ORGANIZATION` e do secret `SONAR_TOKEN`. Sem as variables ele é ignorado, o que não equivale a Quality Gate aprovado. Não inclua tokens no código.
+
+## Estrutura
+
+```text
+src/main/java/br/edu/senac/recursos/   API, segurança e regras
+src/main/resources/                  interface, configuração e schema
+src/test/                            testes de integração e concorrência
+scripts/                             carga, persistência e validação documental
+.github/workflows/ci.yml              automação Java e Node
+docs/                                especificação, resultados e entrega
+```
