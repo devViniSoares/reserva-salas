@@ -78,13 +78,25 @@ O padrão local limita a escuta a localhost. HTTP Basic, falta de rate limiting 
 
 ## Contêiner
 
-Com Docker instalado, a imagem compila e executa o JAR como usuário não root. Use volume nomeado para preservar o H2 e mantenha a porta publicada somente em localhost para a demonstração:
+Com Docker instalado, a imagem compila e executa o JAR como usuário não root. A forma recomendada usa Compose e o volume persistente `reserva-salas-main-data`. No PowerShell:
 
 ```powershell
-docker build -t reserva-salas .
 $env:ADMIN_PASSWORD = Read-Host 'Senha inicial do administrador'
-docker run --rm -p 127.0.0.1:8080:8080 --mount source=reserva-salas-data,target=/app/data --env ADMIN_PASSWORD reserva-salas
+docker compose up --build -d
+docker compose logs -f
 ```
+
+A aplicação fica em `http://127.0.0.1:8080`. Para atualizar após mudanças na branch, execute `docker compose up --build -d`; a imagem será reconstruída e o volume preservado. As cinco salas de demonstração são inseridas quando a base está vazia, no primeiro início que inclui essa funcionalidade. Em uma base já existente, os recursos cadastrados são mantidos.
+
+Para migrar de um contêiner iniciado manualmente com o nome `reserva-salas-main`, pare e remova somente o contêiner antes de iniciar pelo Compose. O volume de dados tem o mesmo nome e será reutilizado:
+
+```powershell
+docker stop reserva-salas-main
+docker rm reserva-salas-main
+docker compose up --build -d
+```
+
+`docker compose down` mantém o volume; não use `docker compose down --volumes` se quiser conservar o banco. Se a base ainda não tiver administrador, defina `ADMIN_PASSWORD` com 12 a 72 caracteres antes da primeira inicialização. Uma senha de bootstrap não altera a conta de administrador já existente.
 
 O contêiner escuta internamente em `0.0.0.0` para permitir o encaminhamento de porta do Docker; não publique o serviço na rede sem configurar os controles de segurança e operação necessários.
 
