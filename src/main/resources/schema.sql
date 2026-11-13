@@ -19,3 +19,6 @@ CREATE TABLE IF NOT EXISTS reservas (
 );
 CREATE INDEX IF NOT EXISTS idx_reservas_intervalo ON reservas(recurso_id, status, inicio, fim);
 CREATE INDEX IF NOT EXISTS idx_reservas_usuario ON reservas(usuario_id);
+CREATE TABLE IF NOT EXISTS inicializacoes (
+ chave VARCHAR(80) PRIMARY KEY
+);

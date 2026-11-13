@@ -6,6 +6,7 @@ Aplicação Java para reservar salas e equipamentos, com API REST e interface em
 
 - Cadastro e login com perfis Usuário, Gestor e Administrador.
 - Catálogo de recursos com busca, filtro e administração.
+- Cinco salas de demonstração cadastradas automaticamente na primeira execução com banco vazio.
 - Disponibilidade, reservas futuras de até 12 horas e cancelamento com histórico.
 - Proteção contra conflitos de recurso e sobreposição das reservas do usuário.
 - Interface web, autenticação HTTP Basic e proteção CSRF.
@@ -50,6 +51,8 @@ O `verify` compila, executa os testes e empacota o JAR em `target/`. O gate JaCo
 
 O primeiro início requer uma senha inicial de administrador entre 12 e 72 caracteres, limitada também a 72 bytes UTF-8. Defina uma senha própria no ambiente; não a grave em arquivos versionados. O e-mail padrão é `admin@exemplo.test`.
 
+No Windows, abra `iniciar.cmd` com dois cliques. Ele compila o projeto quando necessário, pede a senha inicial somente ao criar um banco novo e inicia o Java na pasta do projeto. Depois, abra `http://127.0.0.1:8080` e entre com `admin@exemplo.test` e a senha escolhida. A senha é armazenada no banco como hash, não no código.
+
 PowerShell:
 
 ```powershell
@@ -59,6 +62,8 @@ java -jar target/organizacao-recursos-1.0.0-SNAPSHOT.jar
 ```
 
 Abra `http://127.0.0.1:8080`. O primeiro acesso cria o administrador; usuários podem cadastrar-se pela interface. Os dados são armazenados em `data/recursos.mv.db`. Se já houver administrador, a senha de bootstrap não altera sua conta. Faça backup com a aplicação parada e não abra o mesmo banco em várias instâncias.
+
+Na primeira execução com a tabela de recursos vazia, o sistema cadastra Sala de Projetos, Sala de Reuniões, Sala Multiuso, Laboratório de Informática e Auditório. A inicialização é registrada no banco e não se repete após reiniciar ou excluir uma sala. Um banco que já tenha recursos é preservado sem incluir essas salas de demonstração. Cada instalação local recebe seu próprio banco; reservas e cadastros feitos em outra máquina não são copiados pelo Git.
 
 | Variável | Padrão | Uso |
 |---|---|---|

@@ -1,8 +1,10 @@
 {
-  "executadoEm": "2026-11-13T01:58:18.695Z",
-  "sourceSha": "8bed68e809c20045eef084afa5a0b92fffcb3028",
+  "executadoEm": "2026-11-13T02:28:22.602Z",
+  "sourceSha": "19d5e183624d1548107f77f13d2df09594425397",
   "servidor": "JAR real em duas execuções",
   "banco": "H2 em arquivo descartável com WRITE_DELAY=0",
+  "salasIniciais": 5,
+  "salasIniciaisSemDuplicacao": true,
   "recursoPreservado": true,
   "usuarioPreservado": true,
   "reservaPreservada": true,

@@ -53,6 +53,9 @@ try{
   let occupied=false;try{await fetch(base+'/api/saude',{signal:AbortSignal.timeout(500)});occupied=true;}catch{}
   assert.equal(occupied,false,'Porta ocupada: escolha TEST_PORT diferente.');
   await start(true);
+  const initialRooms=await get('/recursos');
+  assert.deepEqual(initialRooms.map(r=>r.nome).sort(),
+    ['Auditório','Laboratório de Informática','Sala Multiuso','Sala de Projetos','Sala de Reuniões'].sort());
   const csrfResponse=await fetch(base+'/api/csrf'),csrf=await csrfResponse.json();
   const headers={...auth,'Content-Type':'application/json',Cookie:csrfResponse.headers.getSetCookie().map(x=>x.split(';')[0]).join('; '),[csrf.headerName]:csrf.token};
   async function post(path,body,authorization=auth){const r=await fetch(base+'/api'+path,{method:'POST',headers:{...headers,...authorization},body:JSON.stringify(body)});assert.equal(r.status,201);return r.json();}
@@ -62,10 +65,13 @@ try{
   const booking=await post('/reservas',{recursoId:resource.id,inicio,fim,finalidade:'Persistência de reserva'},userAuth);
   await stop();await start(false);
   assert.equal((await get('/recursos/'+resource.id)).nome,resource.nome);
+  const roomsAfterRestart=await get('/recursos');
+  assert.deepEqual(roomsAfterRestart.filter(r=>r.id!==resource.id).map(r=>r.id).sort(),
+    initialRooms.map(r=>r.id).sort());
   const persistedUser=await get('/me',userAuth);
   assert.equal(persistedUser.id,user.id);assert.equal(persistedUser.email,userEmail);
   const bookings=await get('/reservas',userAuth);assert.equal(bookings.length,1);assert.equal(bookings[0].id,booking.id);assert.equal(bookings[0].status,'ATIVA');
   await get('/me');
-  const result={executadoEm:new Date().toISOString(),sourceSha,servidor:'JAR real em duas execuções',banco:'H2 em arquivo descartável com WRITE_DELAY=0',recursoPreservado:true,usuarioPreservado:true,reservaPreservada:true,loginUsuarioAposReinicio:true,loginOriginalAposReinicio:true,reinicioSemSenhaBootstrap:true,aprovado:true};
+  const result={executadoEm:new Date().toISOString(),sourceSha,servidor:'JAR real em duas execuções',banco:'H2 em arquivo descartável com WRITE_DELAY=0',salasIniciais:initialRooms.length,salasIniciaisSemDuplicacao:true,recursoPreservado:true,usuarioPreservado:true,reservaPreservada:true,loginUsuarioAposReinicio:true,loginOriginalAposReinicio:true,reinicioSemSenhaBootstrap:true,aprovado:true};
   writeFileSync('docs/testes/persistencia-local.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
 }finally{await stop();}
