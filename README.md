@@ -51,6 +51,8 @@ O `verify` compila, executa os testes e empacota o JAR em `target/`. O gate JaCo
 
 O primeiro início requer uma senha inicial de administrador entre 12 e 72 caracteres, limitada também a 72 bytes UTF-8. Defina uma senha própria no ambiente; não a grave em arquivos versionados. O e-mail padrão é `admin@exemplo.test`.
 
+No Windows, abra `iniciar.cmd` com dois cliques. Ele compila o projeto quando necessário, pede a senha inicial somente ao criar um banco novo e inicia o Java na pasta do projeto. Depois, abra `http://127.0.0.1:8080` e entre com `admin@exemplo.test` e a senha escolhida. A senha é armazenada no banco como hash, não no código.
+
 PowerShell:
 
 ```powershell
