@@ -1,6 +1,6 @@
 {
-  "executadoEm": "2026-11-13T02:28:22.602Z",
-  "sourceSha": "19d5e183624d1548107f77f13d2df09594425397",
+  "executadoEm": "2026-11-13T02:57:40.428Z",
+  "sourceSha": "8b0e11cec2f3ba85aea50f26c0eda04418f38960",
   "servidor": "JAR real em duas execuções",
   "banco": "H2 em arquivo descartável com WRITE_DELAY=0",
   "salasIniciais": 5,
@@ -9,7 +9,6 @@
   "usuarioPreservado": true,
   "reservaPreservada": true,
   "loginUsuarioAposReinicio": true,
-  "loginOriginalAposReinicio": true,
-  "reinicioSemSenhaBootstrap": true,
+  "loginAdminAposReinicio": true,
   "aprovado": true
 }
