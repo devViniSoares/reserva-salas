@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RecursosTest {
-    private static final String SENHA_TESTE = "AcessoTeste2026!";
+    private static final String SENHA_TESTE = "AdminDemo2026!";
 
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper json;

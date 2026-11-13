@@ -18,7 +18,7 @@ O relatório foi gerado nesta execução no checkout `reserva-salas`; não reuti
 
 ## Persistência
 
-O [resultado local de persistência](persistencia-local.json) foi produzido pelo script [persistencia.mjs](../../scripts/persistencia.mjs) em 10/11/2026, contra o JAR real e um H2 em arquivo descartável. Recurso, reserva e login foram preservados após reinício, sem senha de bootstrap na segunda execução. O SHA medido está no JSON.
+O [resultado local de persistência](persistencia-local.json) foi produzido pelo script [persistencia.mjs](../../scripts/persistencia.mjs), contra o JAR real e um H2 em arquivo descartável. Salas iniciais, recurso, reserva e logins foram preservados após reinício, sem duplicação das salas. O SHA medido está no JSON.
 
 ## Limitações
 

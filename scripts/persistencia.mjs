@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 
 // Somente banco novo e descartável dentro da pasta ignorada .tools.
 mkdirSync('.tools', {recursive:true});
-const id=randomBytes(8).toString('hex'), password=randomBytes(18).toString('hex');
+const id=randomBytes(8).toString('hex');
 const userPassword=randomBytes(18).toString('hex');
 const userEmail='usuario-'+id+'@exemplo.test';
 const port=process.env.TEST_PORT||'8082', base='http://127.0.0.1:'+port;
@@ -16,13 +16,13 @@ const db='jdbc:h2:file:./.tools/persistencia-'+id+';DB_CLOSE_ON_EXIT=FALSE;WRITE
 let sourceSha=process.env.SOURCE_SHA||'TRABALHO_NAO_COMMITADO';
 if(!process.env.SOURCE_SHA){try{if(!execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim())sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();}catch{}}
 let child;
-const auth={Authorization:'Basic '+Buffer.from('admin@exemplo.test:'+password).toString('base64')};
+const auth={Authorization:'Basic '+Buffer.from('admin@exemplo.test:AdminDemo2026!').toString('base64')};
 const userAuth={Authorization:'Basic '+Buffer.from(userEmail+':'+userPassword).toString('base64')};
 async function start(initial){
   const log=openSync('.tools/persistencia-'+id+'-'+(initial?'1':'2')+'.log','w');
   try {
     child=spawn(java,['-jar','target/organizacao-recursos-1.0.0-SNAPSHOT.jar'],{
-      windowsHide:true,env:{...process.env,PORT:port,BIND_ADDRESS:'127.0.0.1',DB_URL:db,DB_PASSWORD:'',ADMIN_EMAIL:'admin@exemplo.test',ADMIN_PASSWORD:initial?password:''},stdio:['ignore',log,log]});
+      windowsHide:true,env:{...process.env,PORT:port,BIND_ADDRESS:'127.0.0.1',DB_URL:db,DB_PASSWORD:''},stdio:['ignore',log,log]});
   } finally { closeSync(log); }
   child.on('error',e=>console.error(e.message));
   for(let n=0;n<120;n++){
@@ -72,6 +72,6 @@ try{
   assert.equal(persistedUser.id,user.id);assert.equal(persistedUser.email,userEmail);
   const bookings=await get('/reservas',userAuth);assert.equal(bookings.length,1);assert.equal(bookings[0].id,booking.id);assert.equal(bookings[0].status,'ATIVA');
   await get('/me');
-  const result={executadoEm:new Date().toISOString(),sourceSha,servidor:'JAR real em duas execuções',banco:'H2 em arquivo descartável com WRITE_DELAY=0',salasIniciais:initialRooms.length,salasIniciaisSemDuplicacao:true,recursoPreservado:true,usuarioPreservado:true,reservaPreservada:true,loginUsuarioAposReinicio:true,loginOriginalAposReinicio:true,reinicioSemSenhaBootstrap:true,aprovado:true};
+  const result={executadoEm:new Date().toISOString(),sourceSha,servidor:'JAR real em duas execuções',banco:'H2 em arquivo descartável com WRITE_DELAY=0',salasIniciais:initialRooms.length,salasIniciaisSemDuplicacao:true,recursoPreservado:true,usuarioPreservado:true,reservaPreservada:true,loginUsuarioAposReinicio:true,loginAdminAposReinicio:true,aprovado:true};
   writeFileSync('docs/testes/persistencia-local.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
 }finally{await stop();}

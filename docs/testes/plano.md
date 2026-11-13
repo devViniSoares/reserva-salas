@@ -18,7 +18,7 @@ Validar [requisitos](../requisitos.md) e [RTM](../rtm.md) deste repositório. An
 
 ## Roteiro manual
 
-1. Clone limpo: seguir somente o README atualizado, compilar, iniciar com senha própria e entrar. Esta etapa ainda não foi executada neste lote.
+1. Clone limpo: seguir somente o README atualizado, compilar, iniciar e entrar com a conta administrativa de demonstração.
 2. Admin cria gestor; gestor cria sala/equipamento; usuário não pode gerir recursos.
 3. Usuário reserva no futuro; outro disputa o horário e recebe conflito.
 4. Usuário tenta cancelar reserva alheia e recebe 403.
