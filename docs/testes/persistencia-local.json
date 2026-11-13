@@ -1,10 +1,12 @@
 {
-  "executadoEm": "2026-11-10T18:24:54.836Z",
-  "sourceSha": "46cc95df717dd7a5c276150316edeca70e6b7430",
+  "executadoEm": "2026-11-13T01:58:18.695Z",
+  "sourceSha": "8bed68e809c20045eef084afa5a0b92fffcb3028",
   "servidor": "JAR real em duas execuções",
   "banco": "H2 em arquivo descartável com WRITE_DELAY=0",
   "recursoPreservado": true,
+  "usuarioPreservado": true,
   "reservaPreservada": true,
+  "loginUsuarioAposReinicio": true,
   "loginOriginalAposReinicio": true,
   "reinicioSemSenhaBootstrap": true,
   "aprovado": true
