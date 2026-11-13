@@ -24,6 +24,14 @@ public class Usuarios implements UserDetailsService {
             nome.trim(), chave, encoder.encode(senha), perfil.name());
         return buscar(chave);
     }
+    public synchronized void garantirSenhaAdmin(String email, String senha) {
+        String chave = normalizar(email);
+        String hash = db.query("SELECT senha FROM usuarios WHERE email=? AND perfil='ADMIN'",
+            (rs, n) -> rs.getString("senha"), chave).stream().findFirst()
+            .orElseThrow(() -> new IllegalStateException("Administrador padrão não encontrado."));
+        if (!encoder.matches(senha, hash))
+            db.update("UPDATE usuarios SET senha=? WHERE email=? AND perfil='ADMIN'", encoder.encode(senha), chave);
+    }
     public Usuario buscar(String email) {
         return db.query("SELECT id,nome,email,perfil FROM usuarios WHERE email = ?", (rs, n) ->
             new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("email"),

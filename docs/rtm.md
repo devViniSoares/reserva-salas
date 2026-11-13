@@ -22,4 +22,4 @@ IDs definidos em [requisitos](requisitos.md). Testes em [RecursosTest.java](../s
 | RNF04 | [Script de carga](../scripts/carga.mjs) | Resultado local a ser gerado no lote de planos e resultados | Pendente |
 | RNF05 | [Schema](../src/main/resources/schema.sql), Agenda | Testes de integração aprovados; execução do script de persistência a ser registrada no lote de planos e resultados | Parcial |
 
-[BootstrapTest](../src/test/java/br/edu/senac/recursos/BootstrapTest.java) também valida senha inicial obrigatória, reutilização de administrador e ausência de SQL nas respostas de erro.
+[BootstrapTest](../src/test/java/br/edu/senac/recursos/BootstrapTest.java) também valida criação e atualização da conta administrativa e ausência de SQL nas respostas de erro.

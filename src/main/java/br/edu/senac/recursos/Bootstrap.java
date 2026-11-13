@@ -18,9 +18,12 @@ public class Bootstrap implements ApplicationRunner {
         this.usuarios = usuarios; this.email = email; this.senha = senha;
     }
     @Override public void run(ApplicationArguments args) {
-        if (usuarios.listar().stream().anyMatch(u -> u.perfil() == Perfil.ADMIN)) return;
         if (senha.length() < 12 || senha.length() > 72)
-            throw new IllegalStateException("Defina ADMIN_PASSWORD com 12 a 72 caracteres para criar o administrador inicial.");
+            throw new IllegalStateException("Senha fixa do administrador inválida.");
+        if (usuarios.listar().stream().anyMatch(u -> u.perfil() == Perfil.ADMIN && u.email().equals(Usuarios.normalizar(email)))) {
+            usuarios.garantirSenhaAdmin(email, senha);
+            return;
+        }
         usuarios.criar("Administrador", email, senha, Perfil.ADMIN);
     }
 }

@@ -9,14 +9,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import br.edu.senac.recursos.Modelos.*;
 
 class BootstrapTest {
-    private static final String SENHA_TESTE = "AcessoTeste2026!";
+    private static final String SENHA_TESTE = "AdminDemo2026!";
 
     @Test void logsNaoExpoemSenhasDosPayloads() {
         String senha=SENHA_TESTE;
         assertThat(new Cadastro("Pessoa","pessoa@exemplo.test",senha).toString()).doesNotContain(senha);
         assertThat(new NovoUsuario("Pessoa","pessoa@exemplo.test",senha,Perfil.GESTOR).toString()).doesNotContain(senha);
     }
-    @Test void exigeSenhaInicialEReutilizaAdministradorExistente() {
+    @Test void criaAdministradorEAtualizaSenhaDoExistente() {
         Usuarios users=mock(Usuarios.class);
         when(users.listar()).thenReturn(List.of());
         assertThatThrownBy(()->new Bootstrap(users,"admin@exemplo.test","").run(new DefaultApplicationArguments()))
@@ -26,8 +26,9 @@ class BootstrapTest {
         new Bootstrap(users,"admin@exemplo.test",SENHA_TESTE).run(new DefaultApplicationArguments());
         verify(users).criar("Administrador","admin@exemplo.test",SENHA_TESTE,Perfil.ADMIN);
         when(users.listar()).thenReturn(List.of(new Usuario(1,"Admin","admin@exemplo.test",Perfil.ADMIN)));
-        new Bootstrap(users,"admin@exemplo.test","").run(new DefaultApplicationArguments());
+        new Bootstrap(users,"admin@exemplo.test",SENHA_TESTE).run(new DefaultApplicationArguments());
         verify(users,times(1)).criar(anyString(),anyString(),anyString(),any());
+        verify(users).garantirSenhaAdmin("admin@exemplo.test",SENHA_TESTE);
     }
     @Test void errosDeIntegridadeNaoExpoemSql() {
         var response=new Erros().integridade(new DataIntegrityViolationException("SQL segredo"));

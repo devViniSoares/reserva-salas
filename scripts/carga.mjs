@@ -2,8 +2,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { dirname } from 'node:path';
 const base=process.env.BASE_URL||'http://127.0.0.1:8080';
-const email=process.env.ADMIN_EMAIL||'admin@exemplo.test', password=process.env.ADMIN_PASSWORD;
-if(!password)throw new Error('Defina ADMIN_PASSWORD com a senha do administrador do banco descartável.');
+const email='admin@exemplo.test', password='AdminDemo2026!';
 const headers={Authorization:'Basic '+Buffer.from(email+':'+password).toString('base64')};
 let source=process.env.SOURCE_SHA;
 if(!source){try{source=execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim()?'TRABALHO_NAO_COMMITADO':execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();}catch{source='SEM_COMMIT';}}

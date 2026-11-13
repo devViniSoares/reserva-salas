@@ -7,7 +7,7 @@ Medir disponibilidade autenticada e disputa de reserva pela API HTTP real em ins
 ## Procedimento
 
 1. Compilar e iniciar o JAR com `DB_URL` apontando para um arquivo H2 descartável dentro de `.tools/` e senha sintética de administrador.
-2. Rodar `node scripts/carga.mjs` com a mesma `ADMIN_PASSWORD`; `BASE_URL` seleciona host/porta.
+2. Rodar `node scripts/carga.mjs` com a conta administrativa de demonstração; `BASE_URL` seleciona host/porta.
 3. O script obtém CSRF/cookie, cria recurso sintético e aquece com 10 consultas.
 4. Medir 200 consultas com 10 trabalhadores simultâneos.
 5. Disputar o mesmo recurso/horário com 10 POSTs simultâneos.
