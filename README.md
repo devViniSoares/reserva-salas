@@ -6,6 +6,7 @@ Aplicação Java para reservar salas e equipamentos, com API REST e interface em
 
 - Cadastro e login com perfis Usuário, Gestor e Administrador.
 - Catálogo de recursos com busca, filtro e administração.
+- Cinco salas de demonstração cadastradas automaticamente na primeira execução com banco vazio.
 - Disponibilidade, reservas futuras de até 12 horas e cancelamento com histórico.
 - Proteção contra conflitos de recurso e sobreposição das reservas do usuário.
 - Interface web, autenticação HTTP Basic e proteção CSRF.
@@ -59,6 +60,8 @@ java -jar target/organizacao-recursos-1.0.0-SNAPSHOT.jar
 ```
 
 Abra `http://127.0.0.1:8080`. O primeiro acesso cria o administrador; usuários podem cadastrar-se pela interface. Os dados são armazenados em `data/recursos.mv.db`. Se já houver administrador, a senha de bootstrap não altera sua conta. Faça backup com a aplicação parada e não abra o mesmo banco em várias instâncias.
+
+Na primeira execução com a tabela de recursos vazia, o sistema cadastra Sala de Projetos, Sala de Reuniões, Sala Multiuso, Laboratório de Informática e Auditório. A inicialização é registrada no banco e não se repete após reiniciar ou excluir uma sala. Um banco que já tenha recursos é preservado sem incluir essas salas de demonstração. Cada instalação local recebe seu próprio banco; reservas e cadastros feitos em outra máquina não são copiados pelo Git.
 
 | Variável | Padrão | Uso |
 |---|---|---|

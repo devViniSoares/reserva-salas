@@ -4,9 +4,11 @@ import br.edu.senac.recursos.Modelos.Perfil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(1)
 public class Bootstrap implements ApplicationRunner {
     private final Usuarios usuarios;
     private final String email;
